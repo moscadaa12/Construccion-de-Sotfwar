@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: Perceptrón y Clasificación de Diabetes</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --accent-color: #e74c3c;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            margin: 25px 0 15px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+        }
+        
+        h3 {
+            color: var(--dark-color);
+            margin: 20px 0 10px;
+        }
+        
+        .intro {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .models-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .model-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border-top: 5px solid var(--primary-color);
+        }
+        
+        .model-2 {
+            border-top-color: var(--secondary-color);
+        }
+        
+        .model-3 {
+            border-top-color: var(--accent-color);
+        }
+        
+        .model-card h4 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+        }
+        
+        .metrics {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0;
+        }
+        
+        .metric {
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .accuracy {
+            color: var(--secondary-color);
+        }
+        
+        .error {
+            color: var(--accent-color);
+        }
+        
+        .confusion-matrix {
+            margin-top: 15px;
+        }
+        
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .matrix-cell {
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .true-negative {
+            background-color: #d4f1d4;
+            color: #155724;
+        }
+        
+        .false-positive {
+            background-color: #ffe6e6;
+            color: #721c24;
+        }
+        
+        .false-negative {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .true-positive {
+            background-color: #cce7ff;
+            color: #004085;
+        }
+        
+        .comparison {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+        
+        .conclusion {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+        
+        .conclusion h2 {
+            color: white;
+            border-bottom-color: white;
+        }
+        
+        .conclusion-list {
+            margin-left: 20px;
+            margin-top: 15px;
+        }
+        
+        .conclusion-list li {
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 1px solid #ddd;
+            color: #777;
+        }
+        
+        .github-link {
+            display: inline-block;
+            background-color: var(--dark-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        
+        .github-link:hover {
+            background-color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .cards-container, .models-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Perceptrón: Clasificación de Diabetes</h1>
+            <p>Implementación y análisis de modelos de perceptrón para diagnóstico médico</p>
+        </header>
+        
+        <section class="intro">
+            <h2>Introducción</h2>
+            <p>Este proyecto implementa y analiza tres modelos de perceptrón aplicados al dataset "Pima Indians Diabetes Database" para clasificación binaria. El perceptrón es una de las redes neuronales más simples y fundamentales en el aprendizaje automático.</p>
+            <p>El objetivo fue evaluar la capacidad de aprendizaje, precisión y generalización de estos modelos, considerando diferentes tasas de aprendizaje y selección de características.</p>
+        </section>
+        
+        <section>
+            <h2>Objetivos del Proyecto</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <h3>Objetivo General</h3>
+                    <p>Implementar y analizar tres modelos de perceptrón aplicados a un problema de clasificación binaria, evaluando el impacto de la tasa de aprendizaje y la selección de características en el desempeño del modelo.</p>
+                </div>
+                <div class="card">
+                    <h3>Objetivos Específicos</h3>
+                    <ul>
+                        <li>Preprocesamiento de datos del dataset de diabetes</li>
+                        <li>Desarrollo del algoritmo del perceptrón desde cero</li>
+                        <li>Entrenamiento de tres variantes del modelo</li>
+                        <li>Evaluación mediante métricas de precisión</li>
+                        <li>Análisis comparativo de resultados</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Metodología</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <h3>Dataset</h3>
+                    <p>Se utilizó el dataset "Diabetes Data Set" de Kaggle, compuesto por:</p>
+                    <ul>
+                        <li>768 registros</li>
+                        <li>9 columnas (8 características + 1 variable objetivo)</li>
+                        <li>División: 70% entrenamiento, 30% prueba</li>
+                    </ul>
+                    <p>Se aplicó escalado estándar (StandardScaler) para normalizar los datos.</p>
+                </div>
+                <div class="card">
+                    <h3>Implementación</h3>
+                    <p>El algoritmo del perceptrón se implementó manualmente en Python sin utilizar librerías de alto nivel.</p>
+                    <p>Cada modelo fue entrenado durante 100 épocas con diferentes configuraciones de tasa de aprendizaje y características.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Modelos Implementados</h2>
+            <div class="models-container">
+                <div class="model-card">
+                    <h4>Modelo 1 (Básico)</h4>
+                    <p><strong>Tasa de aprendizaje:</strong> 0.01</p>
+                    <p><strong>Características:</strong> Todas las variables</p>
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value accuracy">76.62%</div>
+                            <div>Precisión</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value error">23.38%</div>
+                            <div>Error</div>
+                        </div>
+                    </div>
+                    <div class="confusion-matrix">
+                        <h5>Matriz de Confusión</h5>
+                        <div class="matrix-grid">
+                            <div class="matrix-cell true-negative">VN: 130</div>
+                            <div class="matrix-cell false-positive">FP: 21</div>
+                            <div class="matrix-cell false-negative">FN: 33</div>
+                            <div class="matrix-cell true-positive">VP: 47</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="model-card model-2">
+                    <h4>Modelo 2 (Tasa Alta)</h4>
+                    <p><strong>Tasa de aprendizaje:</strong> 0.5 con decaimiento 0.02</p>
+                    <p><strong>Características:</strong> Todas las variables</p>
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value accuracy">76.19%</div>
+                            <div>Precisión</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value error">23.81%</div>
+                            <div>Error</div>
+                        </div>
+                    </div>
+                    <div class="confusion-matrix">
+                        <h5>Matriz de Confusión</h5>
+                        <div class="matrix-grid">
+                            <div class="matrix-cell true-negative">VN: 124</div>
+                            <div class="matrix-cell false-positive">FP: 27</div>
+                            <div class="matrix-cell false-negative">FN: 28</div>
+                            <div class="matrix-cell true-positive">VP: 52</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="model-card model-3">
+                    <h4>Modelo 3 (Menos Características)</h4>
+                    <p><strong>Tasa de aprendizaje:</strong> 0.01</p>
+                    <p><strong>Características:</strong> Glucose, BMI, Age, Pregnancies</p>
+                    <div class="metrics">
+                        <div class="metric">
+                            <div class="metric-value accuracy">69.26%</div>
+                            <div>Precisión</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value error">30.74%</div>
+                            <div>Error</div>
+                        </div>
+                    </div>
+                    <div class="confusion-matrix">
+                        <h5>Matriz de Confusión</h5>
+                        <div class="matrix-grid">
+                            <div class="matrix-cell true-negative">VN: 106</div>
+                            <div class="matrix-cell false-positive">FP: 45</div>
+                            <div class="matrix-cell false-negative">FN: 26</div>
+                            <div class="matrix-cell true-positive">VP: 54</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="comparison">
+            <h2>Análisis Comparativo</h2>
+            <p>El <strong>Modelo 1</strong> logró la mejor combinación entre estabilidad y precisión (≈76.6%), mostrando una convergencia gradual y estable.</p>
+            <p>El <strong>Modelo 2</strong>, con una tasa de aprendizaje más alta, alcanzó resultados similares, aunque con pequeñas fluctuaciones debido a actualizaciones de peso más agresivas.</p>
+            <p>El <strong>Modelo 3</strong>, que utilizó un subconjunto reducido de características, obtuvo una precisión más baja (≈69%), lo cual demuestra que eliminar variables relevantes deteriora la capacidad de discriminación del modelo.</p>
+            <p>En conjunto, se observa que la tasa de aprendizaje influye en la velocidad de <strong>convergencia</strong>, mientras que la selección de características impacta directamente en la <strong>capacidad predictiva</strong>.</p>
+        </section>
+        
+        <section class="conclusion">
+            <h2>Conclusiones</h2>
+            <p>El perceptrón demostró ser un modelo capaz de clasificar con precisión moderada un problema de diagnóstico médico binario, alcanzando hasta un 76% de aciertos.</p>
+            <ul class="conclusion-list">
+                <li>Incrementar la tasa de aprendizaje acelera la convergencia, aunque puede generar oscilaciones en la precisión final.</li>
+                <li>Reducir las características de entrada disminuye la información disponible para la clasificación, reduciendo la exactitud global.</li>
+                <li>La calidad del preprocesamiento y normalización es crucial para el buen desempeño del perceptrón.</li>
+            </ul>
+            <p>En términos generales, el perceptrón simple es útil para problemas linealmente separables, pero su desempeño se ve limitado en datasets más complejos como el de diabetes, donde las relaciones entre variables no son completamente lineales.</p>
+            <p>Para obtener resultados superiores sería necesario utilizar modelos más sofisticados como perceptrones multicapa (MLP) o redes neuronales con funciones de activación no lineales.</p>
+        </section>
+        
+        <footer>
+            <p>Proyecto desarrollado por: Mamani Cæyacillea Emerson, Cordova Sucapuca Jodi, Lope Pari Juan Carlos, Espinoza Nieto Oscar Ailthoon, Barrios Morales Bruce Saul</p>
+            <a href="https://github.com/moscadaa12/Construccion-de-Sotfwar" class="github-link" target="_blank">Ver código en GitHub</a>
+        </footer>
+    </div>
+</body>
+</html>
